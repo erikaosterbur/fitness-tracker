@@ -16,7 +16,7 @@ app.use(express.static("public"));
 const opts = {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false};
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/userdb", opts);
 
-
+app.use(require("/api.js"));
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
