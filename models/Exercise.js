@@ -14,7 +14,7 @@ const exerciseSchema = new Schema({
     },
     duration: {
         type: Number,
-        required: "How long was your workout?"
+        required: "How long was the duration of your workout?"
     },
     weight: {
         type: Number,

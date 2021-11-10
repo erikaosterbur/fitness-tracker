@@ -14,9 +14,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 const opts = {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false};
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/userdb", opts);
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", opts);
 
-app.use(require("/api.js"));
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
