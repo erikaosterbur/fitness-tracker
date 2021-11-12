@@ -18,14 +18,6 @@ app.use(express.static("public"));
 const opts = {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false};
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", opts);
 
-db.Workout.create({})
-  .then(dbWorkout => {
-    console.log(dbWorkout);
-  })
-  .catch(({ message }) => {
-    console.log(message);
-  });
-
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
 });
@@ -39,9 +31,9 @@ app.get("/stats", (req, res) => {
 });
 
 app.get('/api/workouts', (req, res) => {
-  db.Workout.find({})
+  db.Workout.aggregate([{$addFields: {totalDuration: {$sum: "$exercises.duration"}}}])
   .then(dbWorkout => {
-      res.json(dbWorkout);
+    res.json(dbWorkout);
   })
   .catch(err => {
       res.status(400).json(err);
@@ -69,9 +61,9 @@ app.put('/api/workouts/:id', (req, res) => {
 });
 
 app.get('/api/workouts/range', (req, res) => {
-  db.Workout.find({})
+  db.Workout.aggregate([{$addFields: {totalDuration: {$sum: "$exercises.duration"}}}])
   .then(dbWorkout => {
-      res.json(dbWorkout);
+    res.json(dbWorkout);
   })
   .catch(err => {
       res.status(400).json(err);
